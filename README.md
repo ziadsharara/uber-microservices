@@ -14,12 +14,12 @@ A backend system that models the core ride-matching flow of an app like Uber, bu
                                   │ 1. save Ride (REQUESTED)
                                   │ 2. publish RideRequestEvent
                                   ▼
-                         ┌─────────────────┐        Kafka topic
+                         ┌──────────────────┐        Kafka topic
                          │  ride.requested  │◀──────────────────────┐
                          └────────┬─────────┘                        │
                                   │ consumed by                      │
                                   ▼                                  │
-                         ┌──────────────────┐   GET /drivers/nearby  │
+                         ┌───────────────────┐  GET /drivers/nearby  │
                          │ matching-service  │──────────────────▶   │
                          │      (:8084)      │   ┌─────────────────┐ │
                          │  score & pick     │◀─│ location-service│ │
@@ -28,8 +28,8 @@ A backend system that models the core ride-matching flow of an app like Uber, bu
                                   │ publish RideMatchedEvent         │
                                   ▼                                  │
                          ┌─────────────────┐                         │
-                         │  ride.matched    │────────────────────────
-                         └────────┬─────────┘
+                         │  ride.matched   │─────────────────────────
+                         └────────┬────────┘
                                   │ consumed by ride-service
                                   ▼
                     Ride status: REQUESTED → MATCHING → ACCEPTED
