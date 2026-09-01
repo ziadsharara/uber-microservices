@@ -1,0 +1,12 @@
+# Root-level excludes
+.idea/
+Uber project steps.txt
+
+# Build output (each service also has its own .gitignore)
+target/
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# OS/editor
+.DS_Store
+.vscode/
