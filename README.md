@@ -8,26 +8,26 @@ A backend system that models the core ride-matching flow of an app like Uber, bu
 
 ```
                          ┌────────────────┐
-   POST /rides/request   │  ride-service    │
-   ──────────────────▶   │  (MySQL, :8083)  │
-                         └────────┬────────┘
+   POST /rides/request   │  ride-service  │
+   ──────────────────▶  │ (MySQL, :8083) │
+                         └────────┬───────┘
                                   │ 1. save Ride (REQUESTED)
                                   │ 2. publish RideRequestEvent
                                   ▼
                          ┌─────────────────┐        Kafka topic
                          │  ride.requested  │◀──────────────────────┐
-                         └────────┬─────────┘                       │
-                                  │ consumed by                     │
-                                  ▼                                 │
-                         ┌──────────────────┐   GET /drivers/nearby │
+                         └────────┬─────────┘                        │
+                                  │ consumed by                      │
+                                  ▼                                  │
+                         ┌──────────────────┐   GET /drivers/nearby  │
                          │ matching-service  │──────────────────▶   │
-                         │      (:8084)      │   ┌────────────────┐ │
-                         │  score & pick     │◀──│ location-service│ │
+                         │      (:8084)      │   ┌─────────────────┐ │
+                         │  score & pick     │◀─│ location-service│ │
                          │  best driver      │   │  (Redis, :8082) │ │
-                         └────────┬──────────┘   └────────────────┘ │
+                         └────────┬──────────┘   └─────────────────┘ │
                                   │ publish RideMatchedEvent         │
                                   ▼                                  │
-                         ┌─────────────────┐                        │
+                         ┌─────────────────┐                         │
                          │  ride.matched    │────────────────────────
                          └────────┬─────────┘
                                   │ consumed by ride-service
